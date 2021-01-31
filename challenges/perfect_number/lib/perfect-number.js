@@ -56,7 +56,7 @@ class PerfectNumber {
   }
 
   static classify(number) {
-    if (number < 0) {
+    if (number <= 0) {
       throw new Error(`input: ${number} - please enter positive number`);
     }
     let aliquotSum = PerfectNumber.findSum(number);
