@@ -1,0 +1,11 @@
+// refactor invocation of function so we don't need to
+// grab each element of array by index
+
+function formatName(firstName, middleName, lastName) {
+  return `${lastName}, ${firstName} ${middleName[0]}.`;
+}
+
+let fullName = ["James", "Tiberius", "Kirk"];
+
+console.log(formatName(...fullName));
+// logs: Kirk, James T.
