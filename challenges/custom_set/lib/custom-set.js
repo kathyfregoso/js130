@@ -23,9 +23,9 @@ contains method:
 - checks if arg number is contained arg
 - true if contained, false otherwise
 
-subset method: 
+subset method:
 - pass in CustomSet as argument
-- the instance set is subset if all of its elements are 
+- the instance set is subset if all of its elements are
 contained in the argument set
 - 2 empty sets returns true
 - empty set is subset of non-empty set, returns true
@@ -43,30 +43,91 @@ disjoint method:
 
 isSame method:
 - sets with same elements are equal, returns true
+- sets with different elements aren't equal, returns false
 - empty set is not equal to non-empty set, returns false
-- 
+
+add method:
+- unique elements added to a set
+- adds element to empty set
+- add to non-empty set
+- adding existing element doesn't change the set (no duplicates)
+
+intersection method:
+- returns a set of all shared elements
+- intersection of 2 empty sets is an empty set
+- intersection of an empty set and non-empty set is an empty set
+- intersection of 2 sets with no shared elements is an empty set
+- intersection of 2 sets with shared elements is a set of the shared elements
+
+difference method:
+- different of a set is a set of all elements that're only in the 1st set
+  - difference of 2 empty sets is empty set
+  - diff. of empty set and non-empty set is an empty set
+  - diff. of 2 non-empty sets is a set of elements that're only in the 1st set
+
+union method:
+- returns a set of all elements in either set
+ - union of empty sets is an empty set
+ - union of empty set and non-empty set is the non-empty set
+ - union of non-empty sets contains all unique elements
 */
 
 class CustomSet {
   constructor(array = []) {
     this.array = array;
   }
+
+  add(value) {
+    if (!this.contains(value)) {
+      this.array.push(value);
+    }
+    return this;
+  }
+
   isEmpty() {
-
+    return this.array.length === 0;
   }
 
-  contains() {
+  contains(value) {
+    return this.array.includes(value);
   }
 
-  difference();
+  difference(otherSet) {
+    let unshared = this.array.filter((value) => !otherSet.contains(value));
+    return new CustomSet(unshared);
+  }
 
-  isDisjoint() {}
+  isDisjoint(otherSet) {
+    return !this.array.some((value) => otherSet.contains(value));
+  }
 
-  isSubset() {}
+  intersection(otherSet) {
+    let shared = [];
+    this.array.forEach((value) => {
+      if (otherSet.contains(value)) {
+        shared.push(value);
+      }
+    });
+    return new CustomSet(shared);
+  }
 
-  isSame() {}
+  isSubset(otherSet) {
+    return this.array.every((value) => otherSet.contains(value));
+  }
 
-  union() {}
+  isSame(otherSet) {
+    if (this.array.length !== otherSet.array.length) return false;
+
+    return this.isSubset(otherSet);
+  }
+
+  union(otherSet) {
+    let combined = [...this.array, ...otherSet.array];
+    let unique = combined.filter(
+      (value, index, arr) => arr.indexOf(value) === index
+    );
+    return new CustomSet(unique);
+  }
 }
 
 module.exports = CustomSet;
